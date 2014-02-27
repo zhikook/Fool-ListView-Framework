@@ -18,5 +18,21 @@ onSlideLeft/RightListener的接口。在UI的显示交互上考虑到相对于�
 ***********************************************************************************************
 
 关于作者
-Blog website : http://zhiyong.sinaapp.com 
-My Articles:
+Blog website : <a href ="http://zhiyong.sinaapp.com">http://zhiyong.sinaapp.com </a>
+
+***********************************************************************************************
+
+My Articles: The Architecture Design of Android (UML)
+
+update 2013.10.16
+
+1 |    <a href ="">Android System Architecture Design </a>
+2 |    <a href ="">Android GUI Architecture Summary</a>
+3 |    <a href ="">Application Framework Activity and Window</a>
+4 |    <a href ="">Application Framework WindowManagerService</a>
+5 |    <a href ="">Application Framework View and ViewRootImpl</a>
+6 |    <a href ="">Android GUI Renderer</a>
+7 |    <a href ="">Android’s SurfaceFlinger</a>
+8 |    <a href ="">Android’s Handler</a>
+9 |    <a href ="">Android Input Framework</a>
+
