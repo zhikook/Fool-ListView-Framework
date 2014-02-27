@@ -13,9 +13,9 @@ onSlideLeft/RightListener的接口。在UI的显示交互上考虑到相对于�
 
 ***********************************************************************************************
 
-![Fool-ListView-Framework](https://github.com/zhikook/Fool-ListView-Framework/blob/master/pullinout.png)
+![Fool-ListView-Framework](https://raw.github.com/zhikook/Fool-ListView-Framework/master/pullinout.png)
 
-![Fool-ListView-Framework](https://github.com/zhikook/Fool-ListView-Framework/blob/master/slide.png)
+![Fool-ListView-Framework](https://raw.github.com/zhikook/Fool-ListView-Framework/master/slide.png)
 
 Sample App：
 
