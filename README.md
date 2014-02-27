@@ -34,9 +34,7 @@ which contains baseclasses and others.
 ```
 ### activity_main.xml
 ``` xml
-<!--
-  The PullToRefreshListView replaces a standard ListView widget.
--->
+<!-- the SubFoolView replaces a standard ListView widget.-->
     ...
 <com.example.app.SubFoolView
     android:id="@+id/android:list"
@@ -46,7 +44,7 @@ which contains baseclasses and others.
     ...
 ```
 
-### MyActivity.java
+### MainActivity.java
 ``` java
 public class MainActivity extends Activity implements OnPullOutListener{
 	
