@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="entries" format = "reference"/>
+
+    <declare-styleable name="ListView">
+        <!-- Reference to an array resource that will populate the ListView.  For static content,
+             this is simpler than populating the ListView programmatically. -->
+        <attr name="entries" />
+        <!-- Drawable or color to draw between list items. -->
+        <attr name="divider" format="reference|color" />
+        <!-- Height of the divider. Will use the intrinsic height of the divider if this
+             is not specified. -->
+        <attr name="dividerHeight" format="dimension" />
+        <!-- When set to false, the ListView will not draw the divider after each header view.
+             The default value is true. -->
+        <attr name="headerDividersEnabled" format="boolean" />
+        <!-- When set to false, the ListView will not draw the divider before each footer view.
+             The default value is true. -->
+        <attr name="footerDividersEnabled" format="boolean" />
+
+    </declare-styleable>
+
+</resources>
