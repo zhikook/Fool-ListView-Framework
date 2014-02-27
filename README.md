@@ -46,7 +46,7 @@ onSlideLeft/RightListener的接口。在UI的显示交互上考虑到相对于�
 
 ***********************************************************************************************
 
-My Articles: The Architecture Design of Android (UML)
+### The Architecture Design of Android (UML)
 
 update 2013.10.16
 
