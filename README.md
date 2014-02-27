@@ -1,7 +1,5 @@
 #Fool-ListView-Framework
 
-***********************************************************************************************
-
 Android UI ,Special ListView Framework, Version 0.488
 
 ##Framework简介：
