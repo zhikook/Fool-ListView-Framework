@@ -13,9 +13,64 @@ onSlideLeft/RightListener的接口。在UI的显示交互上考虑到相对于�
 
 ![Fool-ListView-Framework](https://raw.github.com/zhikook/Fool-ListView-Framework/master/slide.png)
 ***********************************************************************************************
-## Sample App
+## Usage
+
+Need to create a subclass that extends FooView and layout in the xml file, with import FoollistView.jar 
+which contains baseclasses and others.
+
+### SubFoolView.java
+```java
+    import zy.fool.widget.FoolView;
+    
+    public class SubFoolView extends FoolView{
+        ...
+        public SubFoolView(Context context){
+            super(context);
+        }
+        
+        ....
+    }
+
+```
+### activity_main.xml
+``` xml
+<!--
+  The PullToRefreshListView replaces a standard ListView widget.
+-->
+    ...
+<com.example.app.SubFoolView
+    android:id="@+id/android:list"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent"
+    />
+    ...
+```
+
+### MyActivity.java
+``` java
+public class MainActivity extends Activity implements OnPullOutListener{
+	
+	MyAdapter mAdapter ;
+	SubFoolView mView ;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		setContentView(R.layout.activity_main);
+    	mView = (SubFoolView)findViewById(R.id.foolview);
+		mAdapter = new MyAdapter(this);
+		mView.setOnPullListener(this);
+		mFoolView.setAdapter(mAdapter);
+	}
+    ...
+}
+
+```
 
 ## Add Jar Libs
+
+
 
 ## License
 
