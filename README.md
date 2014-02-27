@@ -11,9 +11,10 @@ Android UI ,Special ListView Framework, Version 0.488
 onSlideLeft/RightListener的接口。在UI的显示交互上考虑到相对于滚动显示的功能，针对特别的情景下，
 提供抽样显示的交互方式。
 
-[Fool-ListView-Framework]
-
 ***********************************************************************************************
+
+[Fool-ListView-Framework](https://github.com/zhikook/Fool-ListView-Framework/blob/master/pullinout.png)
+[Fool-ListView-Framework](https://github.com/zhikook/Fool-ListView-Framework/blob/master/slide.png)
 
 Sample App：
 
