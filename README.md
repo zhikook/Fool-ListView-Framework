@@ -37,8 +37,12 @@ onSlideLeft/RightListener的接口。在UI的显示交互上考虑到相对于�
 
 ***********************************************************************************************
 
-### 关于作者
+### Author
+* Zhiyong Liu ,At Shanghai,China 
 * Blog website:[http://zhiyong.sinaapp.com](http://zhiyong.sinaapp.com)
+* weixin:@daliu_v
+* weibo:@gswift
+* email:zhikook # gmail.com # -> @
 
 ***********************************************************************************************
 
