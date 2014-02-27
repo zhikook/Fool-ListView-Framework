@@ -37,7 +37,7 @@ which contains baseclasses and others.
 <!-- the SubFoolView replaces a standard ListView widget.-->
     ...
 <com.example.app.SubFoolView
-    android:id="@+id/android:list"
+    android:id="@+id/foollist"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
     />
@@ -56,12 +56,22 @@ public class MainActivity extends Activity implements OnPullOutListener{
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
-    	mView = (SubFoolView)findViewById(R.id.foolview);
+    	mView = (SubFoolView)findViewById(R.id.foollist);
 		mAdapter = new MyAdapter(this);
 		mView.setOnPullListener(this);
 		mFoolView.setAdapter(mAdapter);
 	}
-    ...
+	
+	...
+    
+	@Override
+	public boolean onPullOut() {
+		// TODO Auto-generated method stub
+		
+		...Callback Method...
+		
+		return true;
+	}
 }
 
 ```
