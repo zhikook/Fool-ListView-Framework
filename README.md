@@ -4,7 +4,7 @@ Android UI ,Special ListView Framework, Version 0.488
 
 ## Framework Priview
 
-###This project aims to provide a reusable pull to refresh widget for android.
+###This project aims to provide more oprations in listview widget for android.
 
 the framework is based on AbsListView class，in use case , It needs some new gestures,such as pull out /in ,
 not from top or bottom,but for special position. the framework can recognize these gesture,and provides interfaces such as onPull Out/in Listener、onSlide Left/Right Listener. additional scrolling,the widget can layout as spot-display.the usage will introduce more details .
