@@ -2,7 +2,7 @@
 <resources>
     <attr name="entries" format = "reference"/>
 
-    <declare-styleable name="ListView">
+    <declare-styleable name="FoolView">
         <!-- Reference to an array resource that will populate the ListView.  For static content,
              this is simpler than populating the ListView programmatically. -->
         <attr name="entries" />
@@ -17,7 +17,182 @@
         <!-- When set to false, the ListView will not draw the divider before each footer view.
              The default value is true. -->
         <attr name="footerDividersEnabled" format="boolean" />
+        <!-- Drawable to draw above list content. -->
+        <attr name="overScrollHeader" format="reference|color" />
+        <!-- Drawable to draw below list content. -->
+        <attr name="overScrollFooter" format="reference|color" />
+    </declare-styleable>
 
+    <declare-styleable name="Theme">
+
+        <!-- =================== -->
+        <!-- FoolView widget styles -->
+        <!-- =================== -->
+        <eat-comment />
+
+        <!-- Default AbsListView style. -->
+        <attr name="absListViewStyle" format="reference" />
+        <!-- Default AutoCompleteTextView style. -->
+        <attr name="autoCompleteTextViewStyle" format="reference" />
+        <!-- Default Checkbox style. -->
+        <attr name="checkboxStyle" format="reference" />
+        <!-- Default CheckedTextView style. -->
+        <attr name="checkedTextViewStyle" format="reference" />
+        <!-- Default ListView style for drop downs. -->
+        <attr name="dropDownListViewStyle" format="reference" />
+        <!-- Default EditText style. -->
+        <attr name="editTextStyle" format="reference" />
+        <!-- Default ExpandableListView style. -->
+        <attr name="expandableListViewStyle" format="reference" />
+        <!-- ExpandableListView with white background. -->
+        <attr name="expandableListViewWhiteStyle" format="reference" />
+        <!-- Default Gallery style. -->
+        <attr name="galleryStyle" format="reference" />
+        <!-- Default GestureOverlayView style. -->
+        <attr name="gestureOverlayViewStyle" format="reference" />
+        <!-- Default GridView style. -->
+        <attr name="gridViewStyle" format="reference" />
+        <!-- The style resource to use for an ImageButton. -->
+        <attr name="imageButtonStyle" format="reference" />
+        <!-- The style resource to use for an ImageButton that is an image well. -->
+        <attr name="imageWellStyle" format="reference" />
+        <!-- Default ListView style. -->
+        <attr name="listViewStyle" format="reference" />
+        <!-- ListView with white background. -->
+        <attr name="listViewWhiteStyle" format="reference" />
+        <!-- Default PopupWindow style. -->
+        <attr name="popupWindowStyle" format="reference" />
+        <!-- Default ProgressBar style. This is a medium circular progress bar. -->
+        <attr name="progressBarStyle" format="reference" />
+        <!-- Horizontal ProgressBar style. This is a horizontal progress bar. -->
+        <attr name="progressBarStyleHorizontal" format="reference" />
+        <!-- Small ProgressBar style. This is a small circular progress bar. -->
+        <attr name="progressBarStyleSmall" format="reference" />
+        <!-- Small ProgressBar in title style. This is a small circular progress bar that will be placed in title bars. -->
+        <attr name="progressBarStyleSmallTitle" format="reference" />
+        <!-- Large ProgressBar style. This is a large circular progress bar. -->
+        <attr name="progressBarStyleLarge" format="reference" />
+        <!-- Inverse ProgressBar style. This is a medium circular progress bar. -->
+        <attr name="progressBarStyleInverse" format="reference" />
+        <!-- Small inverse ProgressBar style. This is a small circular progress bar. -->
+        <attr name="progressBarStyleSmallInverse" format="reference" />
+        <!-- Large inverse ProgressBar style. This is a large circular progress bar. -->
+        <attr name="progressBarStyleLargeInverse" format="reference" />
+        <!-- Default SeekBar style. -->
+        <attr name="seekBarStyle" format="reference" />
+        <!-- Default RatingBar style. -->
+        <attr name="ratingBarStyle" format="reference" />
+        <!-- Indicator RatingBar style. -->
+        <attr name="ratingBarStyleIndicator" format="reference" />
+        <!-- Small indicator RatingBar style. -->
+        <attr name="ratingBarStyleSmall" format="reference" />
+        <!-- Default RadioButton style. -->
+        <attr name="radioButtonStyle" format="reference" />
+        <!-- Default ScrollView style. -->
+        <attr name="scrollViewStyle" format="reference" />
+        <!-- Default HorizontalScrollView style. -->
+        <attr name="horizontalScrollViewStyle" format="reference" />
+        <!-- Default Spinner style. -->
+        <attr name="spinnerStyle" format="reference" />
+        <!-- Default dropdown Spinner style. -->
+        <attr name="dropDownSpinnerStyle" format="reference" />
+        <!-- Default ActionBar dropdown style. -->
+        <attr name="actionDropDownStyle" format="reference" />
+        <!-- Default action button style. -->
+        <attr name="actionButtonStyle" format="reference" />
+        <!-- Default Star style. -->
+        <attr name="starStyle" format="reference" />
+        <!-- Default TabWidget style. -->
+        <attr name="tabWidgetStyle" format="reference" />
+        <!-- Default TextView style. -->
+        <attr name="textViewStyle" format="reference" />
+        <!-- Default WebTextView style. -->
+        <attr name="webTextViewStyle" format="reference" />
+        <!-- Default WebView style. -->
+        <attr name="webViewStyle" format="reference" />
+        <!-- Default style for drop down items. -->
+        <attr name="dropDownItemStyle" format="reference" />
+        <!-- Default style for spinner drop down items. -->
+        <attr name="spinnerDropDownItemStyle" format="reference" />
+        <!-- Default style for drop down hints. -->
+        <attr name="dropDownHintAppearance" format="reference" />
+        <!-- Default spinner item style. -->
+        <attr name="spinnerItemStyle" format="reference" />
+    </declare-styleable>
+
+    <!-- =============================== -->
+    <!-- Widget package class attributes -->
+    <!-- =============================== -->
+    <eat-comment />
+
+    <declare-styleable name="FoolAbsView">
+        <!-- Drawable used to indicate the currently selected item in the list. -->
+        <attr name="listSelector" format="color|reference" />
+        <!-- When set to true, the selector will be drawn over the selected item.
+             Otherwise the selector is drawn behind the selected item. The default
+             value is false. -->
+        <attr name="drawSelectorOnTop" format="boolean" />
+        <!-- Used by ListView and GridView to stack their content from the bottom. -->
+        <attr name="stackFromBottom" format="boolean" />
+        <!-- When set to true, the list uses a drawing cache during scrolling.
+             This makes the rendering faster but uses more memory. The default
+             value is true. -->
+        <attr name="scrollingCache" format="boolean" />
+        <!-- When set to true, the list will filter results as the user types. The
+             List's adapter must support the Filterable interface for this to work. -->
+        <attr name="textFilterEnabled" format="boolean" />
+        <!-- Sets the transcript mode for the list. In transcript mode, the list
+             scrolls to the bottom to make new items visible when they are added. -->
+        <attr name="transcriptMode">
+            <!-- Disables transcript mode. This is the default value. -->
+            <enum name="disabled" value="0"/>
+            <!-- The list will automatically scroll to the bottom when
+                 a data set change notification is received and only if the last item is
+                 already visible on screen. -->
+            <enum name="normal" value="1" />
+            <!-- The list will automatically scroll to the bottom, no matter what items
+                 are currently visible. -->
+            <enum name="alwaysScroll" value="2" />
+        </attr>
+        <!-- Indicates that this list will always be drawn on top of solid, single-color
+             opaque background. This allows the list to optimize drawing. -->
+        <attr name="cacheColorHint" format="color" />
+        <!-- Enables the fast scroll thumb that can be dragged to quickly scroll through
+             the list. -->
+        <attr name="fastScrollEnabled" format="boolean" />
+        <!-- When set to true, the list will use a more refined calculation
+             method based on the pixels height of the items visible on screen. This
+             property is set to true by default but should be set to false if your adapter
+             will display items of varying heights. When this property is set to true and
+             your adapter displays items of varying heights, the scrollbar thumb will
+             change size as the user scrolls through the list. When set to fale, the list
+             will use only the number of items in the adapter and the number of items visible
+             on screen to determine the scrollbar's properties. -->
+        <attr name="smoothScrollbar" format="boolean" />
+        <!-- Defines the choice behavior for the view. By default, lists do not have
+             any choice behavior. By setting the choiceMode to singleChoice, the list
+             allows up to one item to be in a chosen state. By setting the choiceMode to
+             multipleChoice, the list allows any number of items to be chosen.
+             Finally, by setting the choiceMode to multipleChoiceModal the list allows
+             any number of items to be chosen in a special selection mode.
+             The application will supply a
+             {@link android.widget.AbsListView.MultiChoiceModeListener} using
+             {@link android.widget.AbsListView#setMultiChoiceModeListener} to control the
+             selection mode. This uses the {@link android.view.ActionMode} API. -->
+        <attr name="choiceMode">
+            <!-- Normal list that does not indicate choices. -->
+            <enum name="none" value="0" />
+            <!-- The list allows up to one choice. -->
+            <enum name="singleChoice" value="1" />
+            <!-- The list allows multiple choices. -->
+            <enum name="multipleChoice" value="2" />
+            <!-- The list allows multiple choices in a custom selection mode. -->
+            <enum name="multipleChoiceModal" value="3" />
+        </attr>
+
+        <!-- When set to true, the list will always show the fast scroll interface.
+             This setting implies fastScrollEnabled. -->
+        <attr name="fastScrollAlwaysVisible" format="boolean" />
     </declare-styleable>
 
 </resources>

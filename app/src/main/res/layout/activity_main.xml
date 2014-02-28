@@ -7,7 +7,7 @@
     tools:ignore="MergeRootFrame" >
 
     <zy.fool.app.SubFoolView
-        style="@style/widget_foolview"
+        style="@style/SubFoolView"
         android:layout_width="300dp"
         android:layout_height="400dp"
         android:divider="#333333"
