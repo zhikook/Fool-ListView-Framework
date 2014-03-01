@@ -4,7 +4,9 @@ Android UI ,Special ListView Framework, Version 0.488
 
 ## Framework Priview
 
-###This project aims to to provide more apis of gesture control than the listview widget for android.
+### Welcome guys join us!!!create special UI for android!
+
+### This project aims to to provide more apis of gesture control than the listview widget for android.
 
 the framework is based on AbsListView class，in actual condition , It needs some new gestures,such as pull out /in (Pointers-Spread ,Pointers-pinch), not from top or bottom,but for special position. the framework can recognize these gesture,and provides interfaces such as onPull Out/in Listener、onSlide Left/Right Listener. besides scrolling, the widget can layout as spot-display.the usage introduce more details .
 
