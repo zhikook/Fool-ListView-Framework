@@ -1,5 +1,6 @@
 package zy.fool.widget;
 
+import android.R.integer;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -85,41 +86,41 @@ public class FoolView extends FoolAbsView{
 		super(context, attrs, defStyle);
 		// TODO Auto-generated constructor stub
 		
-		TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.ListView, defStyle, 0);
+		TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.FoolListView, defStyle, 0);
 
-        CharSequence[] entries = a.getTextArray(R.styleable.ListView_entries);
+        CharSequence[] entries = a.getTextArray(R.styleable.FoolListView_entries);
         
         if (entries != null) {
             setAdapter(new ArrayAdapter<CharSequence>(context,
                    android.R.layout.simple_list_item_1, entries));
         }
         
-		final Drawable d = a.getDrawable(R.styleable.ListView_divider);
+		final Drawable d = a.getDrawable(R.styleable.FoolListView_divider);
 	        if (d != null) {
 	            // If a divider is specified use its intrinsic height for divider height
 	            setDivider(d);
 	        }
 	        
-	    final Drawable osHeader = a.getDrawable(R.styleable.ListView_overScrollHeader);
+	    final Drawable osHeader = a.getDrawable(R.styleable.FoolListView_overScrollHeader);
 	        
 	    if (osHeader != null) {
 	        setOverscrollHeader(osHeader);
 	    }
 
-        final Drawable osFooter = a.getDrawable(R.styleable.ListView_overScrollFooter);
+        final Drawable osFooter = a.getDrawable(R.styleable.FoolListView_overScrollFooter);
 	      
         if (osFooter != null) {
 	        setOverscrollFooter(osFooter);
 	    }
 
         // Use the height specified, zero being the default
-        final int dividerHeight = a.getDimensionPixelSize(R.styleable.ListView_dividerHeight, 0);
+        final int dividerHeight = a.getDimensionPixelSize(R.styleable.FoolListView_dividerHeight, 0);
 	    if (dividerHeight != 0) {
 	        setDividerHeight(dividerHeight);
 	    }
 
-        mHeaderDividersEnabled = a.getBoolean(R.styleable.ListView_headerDividersEnabled, true);
-        mFooterDividersEnabled = a.getBoolean(R.styleable.ListView_footerDividersEnabled, true);
+        mHeaderDividersEnabled = a.getBoolean(R.styleable.FoolListView_headerDividersEnabled, true);
+        mFooterDividersEnabled = a.getBoolean(R.styleable.FoolListView_footerDividersEnabled, true);
 
         a.recycle();
 	}
@@ -292,7 +293,7 @@ public class FoolView extends FoolAbsView{
 
          if (!mDataChanged) {
              // Try to use an existing view for this position
-        	 //ʵ�ʵ��õ���swapposition
+        	 //实锟绞碉拷锟矫碉拷锟斤拷swapposition
         	 if(swapposition>0){
         		 child = mRecycler.getActiveView(swapposition);
         		 if (child != null) {
@@ -365,9 +366,9 @@ public class FoolView extends FoolAbsView{
         // Respect layout params that are already in the view. Otherwise make some up...
         // noinspection unchecked
         
-        FoolAbsView.LayoutParams p = (FoolAbsView.LayoutParams) child.getLayoutParams();
+        LayoutParams p = (LayoutParams) child.getLayoutParams();
         if (p == null) {
-            p = (FoolAbsView.LayoutParams) generateDefaultLayoutParams();
+            p = (LayoutParams) generateDefaultLayoutParams();
         }
         p.viewType = mAdapter.getItemViewType(position);
 
@@ -431,11 +432,10 @@ public class FoolView extends FoolAbsView{
             child.setDrawingCacheEnabled(true);
         }
 
-        if (recycled && (((FoolAbsView.LayoutParams)child.getLayoutParams()).measuredAndUnusedFromPosition)!= position) {
+        if (recycled && (((LayoutParams)child.getLayoutParams()).measuredAndUnusedFromPosition)!= position) {
             child.jumpDrawablesToCurrentState();
         }
         
-        System.out.println(child.toString());
     }
     
     /**
@@ -472,7 +472,7 @@ public class FoolView extends FoolAbsView{
 	
 	/**
 	 * Measures the height of the given range of children (inclusive) and
-     * returns the height with this ListView's padding and divider heights
+     * returns the height with this FoolListView's padding and divider heights
      * included. If maxHeight is provided, the measuring will stop when the
      * current height reaches maxHeight.
      *
@@ -494,7 +494,7 @@ public class FoolView extends FoolAbsView{
      *            when even 2 children can not be completely shown, so a value
      *            of 2 (remember, inclusive) would be good (assuming
      *            startPosition is 0).
-     * @return The height of this ListView with the given children.
+     * @return The height of this FoolListView with the given children.
      */
     final int measureHeightOfChildren(int widthMeasureSpec, int startPosition, int endPosition,
             final int maxHeight, int disallowPartialChildPosition) {
@@ -517,7 +517,7 @@ public class FoolView extends FoolAbsView{
 
         // mItemCount - 1 since endPosition parameter is inclusive
         endPosition = (endPosition == NO_POSITION) ? adapter.getCount() - 1 : endPosition;
-        final FoolAbsView.RecycleBin recycleBin = mRecycler;
+        final RecycleBin recycleBin = mRecycler;
         final boolean recyle = recycleOnMeasure();
         final boolean[] isMeasuredAndUnused = mIsMeasuredAndUnused;
 
@@ -578,7 +578,7 @@ public class FoolView extends FoolAbsView{
         return fillDown(mFirstPosition, nextTop);
     }
     
-
+   
     /**
      * Fills the list from pos down to the end of the list view.
      *
@@ -612,12 +612,56 @@ public class FoolView extends FoolAbsView{
             pos++;
         }
 
-        //remoteview������
+        //remoteview锟斤拷锟斤拷锟斤拷
         //setVisibleRangeHint(mFirstPosition, mFirstPosition + getChildCount() - 1);
         
         return selectedView;
     }
     
+    
+  private View fillSlide(int pos, int nextTop,int delta) {
+    	
+        View slidedView = null;
+        int mlistLeft;
+        int end = (getBottom() - getTop());
+        if ((mGroupFlags & CLIP_TO_PADDING_MASK) == CLIP_TO_PADDING_MASK) {
+            end -= mListPadding.bottom;
+        }
+        while (nextTop < end && pos < mItemCount) {
+            // is this the selected item?
+        	
+            boolean slided = pos == mSlidedPosition;
+            if(slided){
+            	mlistLeft = mListPadding.left +delta;
+            }else {
+            	mlistLeft = mListPadding.left;
+			}
+            
+            View child = makeAndAddView(pos, nextTop, true, mlistLeft, slided);
+
+            nextTop = child.getBottom() + mDividerHeight;
+            //nextTop = child.getBottom() ;
+            if (slided) {
+                slidedView = child;
+            }
+            pos++;
+        }
+
+        //remoteview锟斤拷锟斤拷锟斤拷
+        //setVisibleRangeHint(mFirstPosition, mFirstPosition + getChildCount() - 1);
+        
+        return slidedView;
+    }
+    
+
+  	private View fillAfterSlide(int pos,int nextTop) {
+  		if (mFirstPosition < 0) {
+  			mFirstPosition = 0;
+        }      
+  		int delta = incrementalDeltaX;	
+  		return fillSlide(pos, nextTop,delta);
+  	}
+  
     /**
      * Fills the list from pos up to the top of the list view.
      *
@@ -760,11 +804,11 @@ public class FoolView extends FoolAbsView{
 	
     /**
      * Sets the selected item and positions the selection y pixels from the top edge
-     * of the ListView. (If in touch mode, the item will not be selected but it will
+     * of the FoolListView. (If in touch mode, the item will not be selected but it will
      * still be positioned appropriately.)
      *
      * @param position Index (starting at 0) of the data item to be selected.
-     * @param y The distance from the top edge of the ListView (plus padding) that the
+     * @param y The distance from the top edge of the FoolListView (plus padding) that the
      *        item will be positioned.
      */
     public void setSelectionFromTop(int position, int y) {
@@ -808,7 +852,6 @@ public class FoolView extends FoolAbsView{
                 final int offset = Math.max(0, childBottom - (h - mPaddingTop));
                 final int top = focusedChild.getTop() - offset;
 
-                //���ι��
 //                if (mFocusSelector == null) {
 //                mFocusSelector = new FocusSelector();
 //                }
@@ -980,9 +1023,9 @@ public class FoolView extends FoolAbsView{
 	private void measureMeasuredAndUnusedChild(View child, int position, int widthMeasureSpec) {
 		// TODO Auto-generated method stub
 		ViewGroup.LayoutParams pg =  (ViewGroup.LayoutParams) child.getLayoutParams();
-		FoolAbsView.LayoutParams p =(FoolAbsView.LayoutParams)pg;
+		LayoutParams p =(LayoutParams)pg;
         if (p == null) {
-            p = (FoolAbsView.LayoutParams) generateDefaultLayoutParams();
+            p = (LayoutParams) generateDefaultLayoutParams();
             child.setLayoutParams(p);
         }
         p.viewType = mAdapter.getItemViewType(position);
@@ -1081,10 +1124,8 @@ public class FoolView extends FoolAbsView{
 	                break;
 	            case LAYOUT_MOVE_SELECTION:
 	            case LAYOUT_SPOT:
-	            	//
-	            	//��ʼ��������Spot View on screen��ԭ�е����У����е�����
 	            	
-	            	//
+
 	            	break;
 	 	        default:
 	                // Remember the previously selected view
@@ -1116,9 +1157,9 @@ public class FoolView extends FoolAbsView{
 	                return;
 	            } else if (mItemCount != mAdapter.getCount()) {
 	                throw new IllegalStateException("The content of the adapter has changed but "
-	                        + "ListView did not receive a notification. Make sure the content of "
+	                        + "FoolListView did not receive a notification. Make sure the content of "
 	                        + "your adapter is not modified from a background thread, but only "
-	                        + "from the UI thread. [in ListView(" + getId() + ", " + getClass() 
+	                        + "from the UI thread. [in FoolListView(" + getId() + ", " + getClass() 
 	                        + ") with Adapter(" + mAdapter.getClass() + ")]");
 	            }
 
@@ -1215,7 +1256,7 @@ public class FoolView extends FoolAbsView{
 	                sel = fillFromTop(childrenTop);
 	                adjustViewsUpOrDown();
 	                break;
-	            case LAYOUT_SPECIFIC: //�Զ����ʼλ��
+	            case LAYOUT_SPECIFIC: 
 	                sel = fillSpecific(reconcileSelectedPosition(), mSpecificTop);
 	                break;
 	            case LAYOUT_MOVE_SELECTION:
@@ -1226,6 +1267,9 @@ public class FoolView extends FoolAbsView{
 //	            		setItemPulledChecked(firstPosition, true);
 //	            	}
 	            	sel = swapDown(mFirstPosition, childrenTop, childCount);
+	            	break;
+	            case LAYOUT_SLIDE:
+	            	sel = fillAfterSlide(mFirstPosition,childrenTop);
 	            	break;
 	            default:
 	                if (childCount == 0) {
@@ -1371,7 +1415,101 @@ public class FoolView extends FoolAbsView{
         final int childBottom = childTop + h;
         child.layout(childLeft, childTop, childRight, childBottom);
     }
-		
+    
+   
+    /**
+     * Re-measure a child, and if its height changes, lay it out preserving its
+     * top, and adjust the children below it appropriately.
+     * @param child The child
+     * @param childIndex The view group index of the child.
+     * @param numChildren The number of children in the view group.
+     */
+    private void measureAndAdjustDown(View child, int childIndex, int numChildren) {
+        int oldHeight = child.getHeight();
+        measureItem(child);
+        if (child.getMeasuredHeight() != oldHeight) {
+            // lay out the view, preserving its top
+            relayoutMeasuredItem(child);
+
+            // adjust views below appropriately
+            final int heightDelta = child.getMeasuredHeight() - oldHeight;
+            for (int i = childIndex + 1; i < numChildren; i++) {
+                getChildAt(i).offsetTopAndBottom(heightDelta);
+            }
+        }
+    }
+
+    /**
+     * When selection changes, it is possible that the previously selected or the
+     * next selected item will change its size.  If so, we need to offset some folks,
+     * and re-layout the items as appropriate.
+     *
+     * @param selectedView The currently selected view (before changing selection).
+     *   should be <code>null</code> if there was no previous selection.
+     * @param direction Either {@link android.view.View#FOCUS_UP} or
+     *        {@link android.view.View#FOCUS_DOWN}.
+     * @param newSelectedPosition The position of the next selection.
+     * @param newFocusAssigned whether new focus was assigned.  This matters because
+     *        when something has focus, we don't want to show selection (ugh).
+     */
+    private void handleNewSelectionChange(View selectedView, int direction, int newSelectedPosition,
+            boolean newFocusAssigned) {
+        if (newSelectedPosition == INVALID_POSITION) {
+            throw new IllegalArgumentException("newSelectedPosition needs to be valid");
+        }
+
+        // whether or not we are moving down or up, we want to preserve the
+        // top of whatever view is on top:
+        // - moving down: the view that had selection
+        // - moving up: the view that is getting selection
+        View topView;
+        View bottomView;
+        int topViewIndex, bottomViewIndex;
+        boolean topSelected = false;
+        final int selectedIndex = mSelectedPosition - mFirstPosition;
+        final int nextSelectedIndex = newSelectedPosition - mFirstPosition;
+        if (direction == View.FOCUS_UP) {
+            topViewIndex = nextSelectedIndex;
+            bottomViewIndex = selectedIndex;
+            topView = getChildAt(topViewIndex);
+            bottomView = selectedView;
+            topSelected = true;
+        } else {
+            topViewIndex = selectedIndex;
+            bottomViewIndex = nextSelectedIndex;
+            topView = selectedView;
+            bottomView = getChildAt(bottomViewIndex);
+        }
+
+        final int numChildren = getChildCount();
+
+        // start with top view: is it changing size?
+        if (topView != null) {
+            topView.setSelected(!newFocusAssigned && topSelected);
+            measureAndAdjustDown(topView, topViewIndex, numChildren);
+        }
+
+        // is the bottom view changing size?
+        if (bottomView != null) {
+            bottomView.setSelected(!newFocusAssigned && !topSelected);
+            measureAndAdjustDown(bottomView, bottomViewIndex, numChildren);
+        }
+    }
+  
+    //change the slided view layout
+    
+    private void relayoutSlidedMeasuredItem(View child,int deltax) {
+        final int w = child.getMeasuredWidth();
+        final int h = child.getMeasuredHeight();
+        
+        final int childLeft = mListPadding.left +deltax;
+        final int childRight = childLeft + w;
+        final int childTop = child.getTop();
+        final int childBottom = childTop + h;
+        child.layout(childLeft, childTop, childRight, childBottom);
+    }
+    
+
     @Override
     protected void dispatchDraw(Canvas canvas) {
     	if (mCachingStarted) {
@@ -1741,7 +1879,7 @@ public class FoolView extends FoolAbsView{
      * @return
      */
     private View swapDown(int pos, int nextTop,int childCount) {
-    	//�������setup��select�г�ͻ���������ֻ���ٴ���һ����
+    	
     	View temp = null;
     	int m = 0;
     	

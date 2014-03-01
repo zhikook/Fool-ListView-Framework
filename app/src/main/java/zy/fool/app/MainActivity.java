@@ -1,6 +1,12 @@
 package zy.fool.app;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+
+import zy.fool.view.LittleFoolAdapter;
+import zy.fool.view.SubFoolView;
 
 public class MainActivity extends Activity {
 
@@ -15,7 +21,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         View emptyView = findViewById(android.R.id.empty);
-        mView = (SubFoolView)findViewById(R.id.foolview);
+        mView = (SubFoolView)findViewById(android.R.id.foolview);
         mFoolAdapter = new LittleFoolAdapter(this);
         mView.setEmptyView(emptyView);
         //mView.setOnPullListener(this);
@@ -23,13 +29,6 @@ public class MainActivity extends Activity {
 
         mView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, GENRES));
         //mView.setPullation(2);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
     }
 
     private static final String[] GENRES = new String[] {

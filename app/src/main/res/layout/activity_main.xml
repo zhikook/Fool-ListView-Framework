@@ -6,8 +6,8 @@
     tools:context="zy.fool.app.MainActivity"
     tools:ignore="MergeRootFrame" >
 
-    <zy.fool.app.SubFoolView
-        style="@style/SubFoolView"
+    <zy.fool.view.SubFoolView
+        style="@style/foolview_style"
         android:layout_width="300dp"
         android:layout_height="400dp"
         android:divider="#333333"

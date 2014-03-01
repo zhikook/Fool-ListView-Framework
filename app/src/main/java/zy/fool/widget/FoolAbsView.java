@@ -200,7 +200,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
 	
 	static final int PULLING_TIME = 40; // milliseconds
 	
-	static final int SLIDING_TIME = 180; // milliseconds
+	static final int SLIDING_TIME = 40; // milliseconds
 	
 	   /**
      * How many positions in either direction we will search to try to
@@ -254,10 +254,9 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
      */
     static final int LAYOUT_MOVE_SELECTION = 6;
     
-    /**
-     * 随即抽样显示，与滚动显示加以区别
-     */
     static final int LAYOUT_SPOT = 7;
+    
+    static final int LAYOUT_SLIDE = 8;
     
     /**
      * Normal list that does not indicate choices
@@ -471,9 +470,9 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
 				{-1.0F,-1.0F,-1.0F},
 	};
 
-    protected int mPulldeltaXs[] = {0,0,0};//依次记录三个有效点的X轴运动距离
+    protected int mPulldeltaXs[] = {0,0,0};//
     
-    protected int mPulldeltaYs[] = {0,0,0};//依次记录三个有效点的Y轴运动距离
+    protected int mPulldeltaYs[] = {0,0,0};//
 
 	long mTouchDownTime = 0;
 	
@@ -520,7 +519,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     private boolean mIsChildViewEnabled;
 
     /**
-     * The last scroll state reported to clients through {@link FoolAbsView.OnScrollListener}.
+     * The last scroll state reported to clients through {@link zy.fool.widget.FoolAbsView.OnScrollListener}.
      */
     private int mLastScrollState = OnScrollListener.SCROLL_STATE_IDLE;
 
@@ -674,6 +673,9 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
      * The selection's bottom padding
      */
     int mSelectionBottomPadding = 0;
+    
+    int incrementalDeltaX = 0;
+
 
     /**
      * The offset in pixels form the top of the AdapterView to the top
@@ -726,6 +728,8 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
 	private long m1TouchDownTime;
 
 	private long m2TouchDownTime;
+	
+	int mSlidedPosition;
 
     public interface SelectionBoundsAdjuster {
         /**
@@ -761,7 +765,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
 
 	void initFoolAbsView(){
 
-        //无法取得ViewGroup mGroupFlags值
+        //���娉����寰�ViewGroup mGroupFlags���
 		mGroupFlags |= FLAG_CLIP_CHILDREN;
         mGroupFlags |= FLAG_CLIP_TO_PADDING;
         mGroupFlags |= FLAG_ANIMATION_DONE;
@@ -792,18 +796,19 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
         mMaximumVelocity = config.getScaledMaximumFlingVelocity();
 
 		mPersistentDrawingCache = getPersistentDrawingCache();
+		mSlidedPosition = INVALID_POSITION;
 
 	}
 
 	/**
-	 * 设置LAYOUT NORMAL/SPOT,在创建后，需被调用
+	 * 璁剧疆LAYOUT NORMAL/SPOT,��ㄥ��寤哄��锛����琚�璋����
 	 *
 	 * @param isspot
 	 */
 	public void setSpotLayout(boolean isspot){
 		if(isspot){
 			mLayoutMode = LAYOUT_SPOT;
-			//初始化LAYOUT_SPOT
+			//���濮����LAYOUT_SPOT
 			initSpot();
 		}else {
 			mLayoutMode = LAYOUT_NORMAL;
@@ -1107,7 +1112,6 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
         	mItemPulledIdStates.clear();
         }
 
-        //如果有必要再考虑增加SLIDEDSTATE
     }
 
     @Override
@@ -1227,7 +1231,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
         LongSparseArray<Integer> checkIdState;
 
         /**
-         * Constructor called from {@link FoolAbsView#onSaveInstanceState()}
+         * Constructor called from {@link zy.fool.widget.FoolAbsView#onSaveInstanceState()}
          */
         SavedState(Parcelable superState) {
             super(superState);
@@ -1499,7 +1503,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
      * associated to Views placed in the RecycleBin.
      *
      * @see zy.fool.widget.FoolAbsView.RecycleBin
-     * @see zy.fool.widget.FoolAbsView#setRecyclerListener(zy.fool.widget.FoolAbsView.RecyclerListener)
+     * @see FoolAbsView#setRecyclerListener(zy.fool.widget.FoolAbsView.RecyclerListener)
      */
     public static interface RecyclerListener {
         /**
@@ -2163,8 +2167,6 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     		        mMotionViewOriginalTop = view.getTop();
     	        }
 
-    		    //mMotionX,mMotionY 也是单点有效依次取值
-
                 mMotionX = (int) mKeyPointers[0][mActivePointerId];
                 mMotionY = (int) mKeyPointers[1][mActivePointerId];
                 mMotionPosition = motionPosition;
@@ -2215,7 +2217,6 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     			mPulldeltaYs[1] = (int) (mKeyPointers[1][1]-mInitialKeyPointers[1][1]);
     			if(currentMotionIsPull())
 
-    			//判断推拉放这里
     			mTouchMode = TOUCH_MODE_DONE_WAITING;
     		}
 
@@ -2223,11 +2224,11 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     			case TOUCH_MODE_DOWN:
     			case TOUCH_MODE_TAP:
     			case TOUCH_MODE_DONE_WAITING:
-    				//这里的时间会有问题的
+    				
     				if(startPullIfNeeded())break;
 
     				//check if we have moved far enough that it looks more like a scroll than a tap
-    				//item scroll 也是单点依次取值
+    				//item scroll
     				else
     				if(startScrollItemIfNeeded((int)mKeyPointers[0][mActivePointerId],(int)mKeyPointers[1][mActivePointerId]))break;
     				else
@@ -2246,8 +2247,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     				}
     				break;
     			case TOUCH_MODE_OVERPULL:
-                    //增加PULL加速度判断
-    				if(mPendingItemPull!=null){
+                    if(mPendingItemPull!=null){
                         mPendingItemPull.performPull();
     				}
     				break;
@@ -2261,8 +2261,6 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
 
     	case MotionEvent.ACTION_UP:{
     		mActivePointsNum = 0;
-    		//需要清理Pull/State状态
-
     		switch (mTouchMode) {
 	    		case TOUCH_MODE_DOWN:
 	    		case TOUCH_MODE_TAP:
@@ -2436,11 +2434,10 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
                 }
 	  			case TOUCH_MODE_SLIDE:
 	  			case TOUCH_MODE_OVERSLIDE:{
-	  				//执行SLIDE 响应事件
-                    if(mPerformItemSlide!=null)
-                        mPerformItemSlide.endSlide();
+	  				if(mPerformItemSlide!=null)
+                        mPerformItemSlide.setSlideState(ItemSlide.SLIDE_DONE);
                         removeCallbacks(mPerformItemSlide);
-                    mTouchMode = TOUCH_MODE_REST;
+                    //mTouchMode = TOUCH_MODE_REST;
 
                     mTouchModeReset = new Runnable() {
 		                  @Override
@@ -2712,7 +2709,6 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
             mActivePointerId = ev.getPointerId(newPointerIndex);
         }
 
-        //考虑逻辑上，需不需要，在PULL过程中，发生触摸点减少并且触摸点数小于1
         if(mTouchMode == TOUCH_MODE_PULL&&mActivePointerId<1){
             mTouchMode = TOUCH_MODE_OVERPULL;
         }
@@ -2820,7 +2816,6 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     }
 
     /**
-	 * 有效时间的移动
 	 * @param xy0Time
 	 * @return boolean
 	 *
@@ -2835,7 +2830,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
 	}
 
 	private boolean startPullIfNeeded(){
-		//过滤动作
+		//杩�婊ゅ�ㄤ��
 		boolean ispull = false;
 
 		if(mActivePointsNum>1){
@@ -2853,8 +2848,6 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
 			int ixmin = Math.min(ix0, ix1);
 			int iymax = Math.max(iy0, iy1);
 			int iymin = Math.min(iy0, iy1);
-
-            //增加有效时间性的判断
 
 			if((isEffectiveMotion(m1TouchDownTime)|| isEffectiveMotion(m2TouchDownTime))){
 
@@ -3321,8 +3314,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
         final boolean overscroll = mScrollY != 0;
 
         boolean multiscroll = false;
-        //增加multiscroll有没有必要
-
+       
         if(mActivePointsNum>1){
         	if(currentMotionIsPull()){
         		mTouchMode = TOUCH_MODE_PULL;
@@ -4517,7 +4509,6 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
         return 0;
     }
 
-
     /**
      * Fills the gap left open by a touch-scroll. During a touch scroll, children that
      * remain on screen are shifted and the other ones are discarded. The role of this
@@ -4940,7 +4931,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     }
 
     /**
-     * Set a {@link FoolAbsView.MultiChoiceModeListener} that will manage the lifecycle of the
+     * Set a {@link zy.fool.widget.FoolAbsView.MultiChoiceModeListener} that will manage the lifecycle of the
      * selection {@link android.view.ActionMode}. Only used when the choice mode is set to
      * {@link #CHOICE_MODE_MULTIPLE_MODAL}.
      *
@@ -5034,7 +5025,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     
 
     /**
-     * 记录被pulled item position
+     * 璁板��琚�pulled item position
      * @param position
      * @param value
      */
@@ -5096,7 +5087,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     }
   
 	/**
-	 * 返回pulled item总数
+	 * 杩����pulled item��绘��
 	 * @return
 	 */
     public int getItemPulledItemCount(){
@@ -5104,7 +5095,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     }
     
     /**
-     * 初始化抽样UI的环境变量
+     * ���濮������芥��UI������澧�������
      */
     private void initSpot(){
     		
@@ -5131,7 +5122,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     }
     
     /**
-     * 返回all pulled items的最大position
+     * 杩����all pulled items������澶�position
      * @return
      */
     private int getMaxItemPulledFromIdStates(){
@@ -5143,7 +5134,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     }  
     
     /**
-     * 返回all pulled items的最小position
+     * 杩����all pulled items������灏�position
      * @return
      */
     private int getMinItemPulledPosition(){
@@ -5155,13 +5146,10 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     }
     
     /**
-     * 判断手势是否为Slide，itemview scroll
-     * @param x
      * @return
      */
     private boolean startScrollItemIfNeeded(int x,int y){
 	
-    	//判断动作是不是滚动
     	mScrollX = getScrollX();
 		final int deltaX = x -mMotionX;
 		final int deltaY = y -mMotionY;
@@ -5183,6 +5171,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
 			}
 				
 			scrollItemIfNeed(x);
+			System.out.println("Scroll" +x);
 			return true;
 		}else{
 			mTouchMode = TOUCH_MODE_REST;
@@ -5190,10 +5179,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
 		}
 	} 
 
-    //左右移动的偏移量，并将itemview 的移动交由小线程调用
-
-    private int incrementalDeltaX = 0;
-
+ 
     protected int getIncrementalDeltaX(){
         return incrementalDeltaX;
     }
@@ -5214,6 +5200,8 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
             if(mTouchMode == TOUCH_MODE_SLIDE){
                 final Handler handler = getHandler();
 
+                setIncrementalDeltaX(incrementalDeltaX);
+                
                 // Handler should not be null unless the AbsListView is not attached to a
                 // window, which would make it very hard to scroll it... but the monkeys
                 // say it's possible.
@@ -5222,19 +5210,23 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
                 }
                 setPressed(false);
 
-                if (mMotionPosition >= 0&&mPerformItemSlide == null) {
+                if (mMotionPosition >= 0) {
                     int	motionIndex = mMotionPosition - mFirstPosition;
                     View motionView = getChildAt(motionIndex);
 
                     if (motionView != null) {
                         motionView.setPressed(false);
                     }
-
-                    mPerformItemSlide = new PerformItemSlide();
-                    postDelayed(mPerformItemSlide, SLIDING_TIME);
-
+                    
+                    if(mPerformItemSlide==null){
+                    	mPerformItemSlide = new PerformItemSlide();
+                    	mPerformItemSlide.setSlideState(ItemSlide.SLIDE_ENTER);
+                    	mPerformItemSlide.run();
+                    }
                 }
 
+                mPerformItemSlide.setSlideState(ItemSlide.SLIDE_IN);
+				               
             }else if(mTouchMode == TOUCH_MODE_OVERSLIDE){
                 if (x != mLastX) {
                     final int oldScroll = mScrollX;
@@ -5252,11 +5244,15 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
                     } else {
                         incrementalDeltaX = 0;
                     }
+                    
+                    setIncrementalDeltaX(incrementalDeltaX);
+                    
                 }
             }
-
-            //设置偏移值
-            setIncrementalDeltaX(incrementalDeltaX);
+            
+            if(mPerformItemSlide!=null){
+              	 postDelayed(mPerformItemSlide, SLIDING_TIME);
+            }
 
         }else{
             mTouchMode = TOUCH_MODE_DONE_WAITING;
@@ -5285,7 +5281,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     
     private boolean performSpotClick() {
 		// TODO Auto-generated method stub
-        //PULL手势动作结束
+        //PULL�����垮�ㄤ��缁����
     	if(!mDataChanged&&mTouchMode == TOUCH_MODE_OVERPULL){
     		switch (mPullMode) {
 			case MULTI_TOUCH_PULLIN:
@@ -5332,13 +5328,13 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     }
 
     /**
-     * 在SLIDE动作结束后才允许执行回调函数接口
+     * ���SLIDE��ㄤ��缁�������������璁告�ц�����璋���芥�版�ュ��
      * @return
      */
     private boolean performSpotSlide() {
 		// TODO Auto-generated method stub
     	if(!mDataChanged&&mTouchMode == TOUCH_MODE_OVERSLIDE){
-            //执行回调函数
+            //��ц�����璋���芥��
     		switch (mSlideMode) {
 			case TOUCH_SLIDE_LEFT:
 				if(mSlideLeftListener!=null){
@@ -5379,7 +5375,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     	private View pullView;
     	private float mOriginalAlpha;
     	private Handler mHandler = new Handler();
-        private ItemViewAlphaRunnable mItemAlphaRunnable; //PullFade是处理对应的View的透明度
+        private ItemViewAlphaRunnable mItemAlphaRunnable; //PullFade���澶����瀵瑰�����View���������搴�
         
         private int mState;
         
@@ -5408,7 +5404,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     		@Override
     		public void run() {
     			
-    			//原来封装成为一个initFade函数
+    			//�����ュ��瑁����涓轰��涓�initFade��芥��
     			if(!mDataChanged){
     				if(mItemAlphaRunnable!=null){
     	    			setState(STATE_NONE);
@@ -5419,7 +5415,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     	    			//
     	    			mOriginalAlpha = pullView.getAlpha();
                         mItemAlphaRunnable = new ItemViewAlphaRunnable();
-    	    			//如果增加pull则是overpull
+    	    			//濡����澧����pull������overpull
     	    			mHandler.postDelayed(mItemAlphaRunnable, 10);
     	    		}
     			}
@@ -5436,9 +5432,9 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     	}
     		
     	public boolean performPull(){
-            //默认调用 mItemAlphaRunnable 子线程，更新Alpha
+            //榛�璁よ����� mItemAlphaRunnable 瀛�绾跨��锛���存��Alpha
             if(mItemAlphaRunnable!=null){
-    			//进入线程等待
+    			//杩���ョ嚎绋�绛�寰�
 //    			if(mState == STATE_PULL){
 //    				mHandler.removeCallbacks(mItemAlpha);
 //    			}
@@ -5472,7 +5468,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
 	                    break;
 	                case STATE_EXIT:
 	                	mHandler.removeCallbacks(mItemAlphaRunnable);
-	                	//恢复ItemView
+	                	//��㈠��ItemView
 	                	pullView.setAlpha(mOriginalAlpha);
 	                	pullView.invalidate();
 	    	            
@@ -5488,9 +5484,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
         
     	class ItemViewAlphaRunnable implements Runnable {
 
-    		//提供不断变化的ALPHA值
-    		
-    	    long mStartTime;
+    		long mStartTime;
     	    long mItemAlphaDuration;
     	    static final int ALPHA_MAX = 255;
     	    static final long ALPHA_DURATION = 30000;
@@ -5519,7 +5513,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     	    public void run() { 
     	    	if(!mDataChanged){
 
-                    //开始初始化子线程
+                    //寮�濮����濮����瀛�绾跨��
                     if(mStartTime==0)
                     initAlpha();
         	        
@@ -5540,7 +5534,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     }
     
 	/**
-	 * 暂时只判断Y方向的推拉,只取第一、第二触摸点
+	 * �����跺����ゆ��Y��瑰�������ㄦ��,������绗�涓����绗�浜�瑙���哥��
 	 * 	
 	 * 2014.2.24
 	 * @author davidlau
@@ -5557,27 +5551,26 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
 			isAllowedPull = ispull = true;
 		}
 
-        //
-		
+      
 		return ispull;
 	}
 
-    /**
-     * 完成Item SLIDE效果,并且确认SLIDE手势的结束状态，执行SLIDE监听的反调函数
-     * @author davidlau
-     * 2014 2 27 03：08
-     */
-	class PerformItemSlide  extends WindowRunnnable implements Runnable {
-        //需要增加加速度
-
+	
+	private interface ItemSlide{
 		static final int SLIDE_ENTER= 0;
 		static final int SLIDE_IN = 1;
 		static final int SLIDE_DONE = 2;
-
-        private int mSlideState = SLIDE_ENTER;
+	}
+    /**
+     * @author davidlau
+     * 2014 2 27 03锛�08
+     */
+	class PerformItemSlide  extends WindowRunnnable implements Runnable {
+      
+        private int mSlideState = ItemSlide.SLIDE_ENTER;
         private int deltaX;
         private int width;
-        private int MaxDeltaX;
+        private int MaxDeltaX = 0;
 
         View mSlideItemView;
 
@@ -5589,15 +5582,16 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
 
             if(!mDataChanged&&mIsAttached){
                 switch (mSlideState) {
-                    case SLIDE_ENTER:
-                        mTouchMode = TOUCH_MODE_OVERSLIDE;
+                    case ItemSlide.SLIDE_ENTER:
+                       // mTouchMode = TOUCH_MODE_OVERSLIDE;
                         init();
                         isSliding = true;
                         break;
-                    case SLIDE_IN:
+                    case ItemSlide.SLIDE_IN:
                         slide();
                         break;
-                    case SLIDE_DONE:
+                    case ItemSlide.SLIDE_DONE:
+                    	endSlide();
                         removeCallbacks(this);
                         isSliding = false;
                         break;
@@ -5608,41 +5602,46 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
 		}
 
         /**
-         * 确定itemview，并且设定最大偏移量
          * @see .slide()
          * 2014.02.27 14:01
          */
 		private void init(){
 
 		   	if(mSlideItemView == null)
-		    	//这里可能会有个漏洞
-	    	mSlideItemView = getChildAt(mMotionPosition-mFirstPosition);
+		    
+		   	mSlideItemView = getChildAt(mMotionPosition-mFirstPosition);
             width = mSlideItemView.getWidth();
-            MaxDeltaX = width/3; //最大篇幅为view 宽度的1/3。
+            MaxDeltaX = width/3; 
 
-            //增加加速度的判断，这样才能确定什么时候创建启动SpotSlide
+        }
+	    
+	    private void slide(){
+	    	
+	    	if(Math.abs(incrementalDeltaX)>MaxDeltaX){
+	    		incrementalDeltaX = incrementalDeltaX>0?MaxDeltaX:-MaxDeltaX;
+	    	}
+	    	
+	    	mSlidedPosition = mMotionPosition;
+	    	mLayoutMode = LAYOUT_SLIDE;
+            layoutChildren();
+           
+            mTouchMode = TOUCH_MODE_OVERSLIDE;            
+        }
+
+		private void endSlide() {
+			mSlidedPosition = INVALID_POSITION;
+            mLayoutMode = LAYOUT_NORMAL;
+            layoutChildren();
+            
             if(mSpotSlide== null){
                 mSpotSlide = new SpotSlide();
             }
             postDelayed(mSpotSlide,SLIDING_TIME);//SLIDEOVERTIME
-	    }
-	    
-	    void slide(){
-
-            if(mSlideItemView!=null&&Math.abs(deltaX)>0)
-            {
-                if(Math.abs(deltaX)>MaxDeltaX)
-                    deltaX= MaxDeltaX;
-                mSlideItemView.setScrollX(deltaX);
-            }
-
-            mSlideItemView.invalidate();
-	    }
-
-		void endSlide() {
-            if(Math.abs(deltaX)>0)
-            deltaX = 0;
-            mSlideState = SLIDE_DONE;
         }
+		
+		void setSlideState(int state){
+			this.mSlideState = state;
+		}
 	}
+	    
 }
