@@ -38,7 +38,7 @@ which contains baseclasses and others.
 ``` xml
 <!-- the SubFoolView replaces a standard ListView widget.-->
     ...
-<com.example.app.SubFoolView
+<com.example.view.SubFoolView
     android:id="@+id/foollist"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
