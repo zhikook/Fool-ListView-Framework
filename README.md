@@ -20,20 +20,6 @@ the framework is based on AbsListView class，in actual condition , It needs som
 Need to create a subclass that extends FooView and layout in the xml file, with import FoollistView.jar 
 which contains baseclasses and others.
 
-### SubFoolView.java
-```java
-    import zy.fool.widget.FoolView;
-    
-    public class SubFoolView extends FoolView{
-        ...
-        public SubFoolView(Context context){
-            super(context);
-        }
-        
-        ....
-    }
-
-```
 ### activity_main.xml
 ``` xml
 <!-- the FoolListView replaces a standard ListView widget.-->
