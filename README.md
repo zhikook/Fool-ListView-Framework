@@ -36,9 +36,9 @@ which contains baseclasses and others.
 ```
 ### activity_main.xml
 ``` xml
-<!-- the SubFoolView replaces a standard ListView widget.-->
+<!-- the FoolListView replaces a standard ListView widget.-->
     ...
-<com.example.view.SubFoolView
+<zy.fool.widget.FoolListView
     android:id="@+id/foollist"
     android:layout_height="fill_parent"
     android:layout_width="fill_parent"
@@ -51,14 +51,14 @@ which contains baseclasses and others.
 public class MainActivity extends Activity implements OnPullOutListener{
 	
 	MyAdapter mAdapter ;
-	SubFoolView mView ;
+	FoolListView mView ;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
-    	mView = (SubFoolView)findViewById(R.id.foollist);
+    	mView = (FoolListView)findViewById(R.id.foollist);
 		mAdapter = new MyAdapter(this);
 		mView.setOnPullListener(this);
 		mFoolView.setAdapter(mAdapter);
