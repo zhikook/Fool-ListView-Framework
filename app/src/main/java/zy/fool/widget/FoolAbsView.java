@@ -519,7 +519,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     private boolean mIsChildViewEnabled;
 
     /**
-     * The last scroll state reported to clients through {@link zy.fool.widget.FoolAbsView.OnScrollListener}.
+     * The last scroll state reported to clients through {@link FoolAbsView.OnScrollListener}.
      */
     private int mLastScrollState = OnScrollListener.SCROLL_STATE_IDLE;
 
@@ -1231,7 +1231,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
         LongSparseArray<Integer> checkIdState;
 
         /**
-         * Constructor called from {@link zy.fool.widget.FoolAbsView#onSaveInstanceState()}
+         * Constructor called from {@link FoolAbsView#onSaveInstanceState()}
          */
         SavedState(Parcelable superState) {
             super(superState);
@@ -1503,7 +1503,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
      * associated to Views placed in the RecycleBin.
      *
      * @see zy.fool.widget.FoolAbsView.RecycleBin
-     * @see FoolAbsView#setRecyclerListener(zy.fool.widget.FoolAbsView.RecyclerListener)
+     * @see zy.fool.widget.FoolAbsView#setRecyclerListener(zy.fool.widget.FoolAbsView.RecyclerListener)
      */
     public static interface RecyclerListener {
         /**
@@ -4931,7 +4931,7 @@ public abstract class FoolAbsView extends FoolAdapterView<ListAdapter> {
     }
 
     /**
-     * Set a {@link zy.fool.widget.FoolAbsView.MultiChoiceModeListener} that will manage the lifecycle of the
+     * Set a {@link FoolAbsView.MultiChoiceModeListener} that will manage the lifecycle of the
      * selection {@link android.view.ActionMode}. Only used when the choice mode is set to
      * {@link #CHOICE_MODE_MULTIPLE_MODAL}.
      *

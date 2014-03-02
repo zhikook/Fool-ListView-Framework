@@ -9,11 +9,11 @@ import android.widget.LinearLayout;
 
 import zy.fool.app.R;
 
-public class LittleFoolAdapter extends BaseAdapter{
+public class FoolAdapter extends BaseAdapter{
 
 	private LayoutInflater mInflater;
 	
-	public LittleFoolAdapter(Context context){
+	public FoolAdapter(Context context){
 		mInflater =LayoutInflater.from(context);
 	}
 

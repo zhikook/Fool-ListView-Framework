@@ -1,6 +1,5 @@
 package zy.fool.widget;
 
-import android.R.integer;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -27,7 +26,7 @@ import zy.android.widget.HeaderViewListAdapter;
 import zy.fool.app.R;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-public class FoolView extends FoolAbsView{
+public class FoolListView extends FoolAbsView{
 	private final static String TAG_STRING = "FoolView";
 	
 	static final int NO_POSITION = -1;
@@ -72,59 +71,56 @@ public class FoolView extends FoolAbsView{
 
 	private int mScrollY;
 
-	public FoolView(Context context) {
+	public FoolListView(Context context) {
 		// TODO Auto-generated constructor stub
 		super(context);
 	}
 	
-	public FoolView(Context context, AttributeSet attrs) {
+	public FoolListView(Context context, AttributeSet attrs) {
 		// TODO Auto-generated constructor stub
-		super(context, attrs);
-	}
-	
-	public FoolView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		// TODO Auto-generated constructor stub
+		super(context,attrs);
 		
-		TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.FoolListView, defStyle, 0);
+		TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.FoolListView);
+			//TypedArray a = context.obtainStyledAttributes(attrs,R.styleable.FoolListView, R.attr.listViewStyle, 0);
 
-        CharSequence[] entries = a.getTextArray(R.styleable.FoolListView_entries);
-        
-        if (entries != null) {
-            setAdapter(new ArrayAdapter<CharSequence>(context,
-                   android.R.layout.simple_list_item_1, entries));
-        }
-        
-		final Drawable d = a.getDrawable(R.styleable.FoolListView_divider);
-	        if (d != null) {
-	            // If a divider is specified use its intrinsic height for divider height
-	            setDivider(d);
+	    CharSequence[] entries = a.getTextArray(R.styleable.FoolListView_entries);
+	        
+	        if (entries != null) {
+	        	setAdapter(new ArrayAdapter<CharSequence>(context,
+	                   android.R.layout.simple_list_item_1, entries));
 	        }
 	        
-	    final Drawable osHeader = a.getDrawable(R.styleable.FoolListView_overScrollHeader);
-	        
-	    if (osHeader != null) {
-	        setOverscrollHeader(osHeader);
-	    }
+			final Drawable d = a.getDrawable(R.styleable.FoolListView_divider);
+				 
+				if (d != null) {
+		            // If a divider is specified use its intrinsic height for divider height
+		            setDivider(d);
+		        }
+		        
+		    final Drawable osHeader = a.getDrawable(R.styleable.FoolListView_overScrollHeader);
+		        
+		    if (osHeader != null) {
+		        setOverscrollHeader(osHeader);
+		    }
 
-        final Drawable osFooter = a.getDrawable(R.styleable.FoolListView_overScrollFooter);
-	      
-        if (osFooter != null) {
-	        setOverscrollFooter(osFooter);
-	    }
+	        final Drawable osFooter = a.getDrawable(R.styleable.FoolListView_overScrollFooter);
+		      
+	        if (osFooter != null) {
+		        setOverscrollFooter(osFooter);
+		    }
 
-        // Use the height specified, zero being the default
-        final int dividerHeight = a.getDimensionPixelSize(R.styleable.FoolListView_dividerHeight, 0);
-	    if (dividerHeight != 0) {
-	        setDividerHeight(dividerHeight);
-	    }
+	        // Use the height specified, zero being the default
+	        final int dividerHeight = a.getDimensionPixelSize(R.styleable.FoolListView_dividerHeight, 0);
+		    if (dividerHeight != 0) {
+		        setDividerHeight(dividerHeight);
+		    }
 
-        mHeaderDividersEnabled = a.getBoolean(R.styleable.FoolListView_headerDividersEnabled, true);
-        mFooterDividersEnabled = a.getBoolean(R.styleable.FoolListView_footerDividersEnabled, true);
+	        mHeaderDividersEnabled = a.getBoolean(R.styleable.FoolListView_headerDividersEnabled, true);
+	        mFooterDividersEnabled = a.getBoolean(R.styleable.FoolListView_footerDividersEnabled, true);
 
-        a.recycle();
+	        a.recycle();
 	}
-
+	
 	@Override
 	public ListAdapter getAdapter() {
 		// TODO Auto-generated method stub
@@ -366,9 +362,9 @@ public class FoolView extends FoolAbsView{
         // Respect layout params that are already in the view. Otherwise make some up...
         // noinspection unchecked
         
-        LayoutParams p = (LayoutParams) child.getLayoutParams();
+        FoolAbsView.LayoutParams p = (FoolAbsView.LayoutParams) child.getLayoutParams();
         if (p == null) {
-            p = (LayoutParams) generateDefaultLayoutParams();
+            p = (FoolAbsView.LayoutParams) generateDefaultLayoutParams();
         }
         p.viewType = mAdapter.getItemViewType(position);
 
@@ -432,7 +428,7 @@ public class FoolView extends FoolAbsView{
             child.setDrawingCacheEnabled(true);
         }
 
-        if (recycled && (((LayoutParams)child.getLayoutParams()).measuredAndUnusedFromPosition)!= position) {
+        if (recycled && (((FoolAbsView.LayoutParams)child.getLayoutParams()).measuredAndUnusedFromPosition)!= position) {
             child.jumpDrawablesToCurrentState();
         }
         
@@ -517,7 +513,7 @@ public class FoolView extends FoolAbsView{
 
         // mItemCount - 1 since endPosition parameter is inclusive
         endPosition = (endPosition == NO_POSITION) ? adapter.getCount() - 1 : endPosition;
-        final RecycleBin recycleBin = mRecycler;
+        final FoolAbsView.RecycleBin recycleBin = mRecycler;
         final boolean recyle = recycleOnMeasure();
         final boolean[] isMeasuredAndUnused = mIsMeasuredAndUnused;
 
@@ -1023,9 +1019,9 @@ public class FoolView extends FoolAbsView{
 	private void measureMeasuredAndUnusedChild(View child, int position, int widthMeasureSpec) {
 		// TODO Auto-generated method stub
 		ViewGroup.LayoutParams pg =  (ViewGroup.LayoutParams) child.getLayoutParams();
-		LayoutParams p =(LayoutParams)pg;
+		FoolAbsView.LayoutParams p =(FoolAbsView.LayoutParams)pg;
         if (p == null) {
-            p = (LayoutParams) generateDefaultLayoutParams();
+            p = (FoolAbsView.LayoutParams) generateDefaultLayoutParams();
             child.setLayoutParams(p);
         }
         p.viewType = mAdapter.getItemViewType(position);
@@ -1596,6 +1592,8 @@ public class FoolView extends FoolAbsView{
 							}
 						}
     					
+
+    					
     				}
     			}
     			
@@ -1640,9 +1638,22 @@ public class FoolView extends FoolAbsView{
 						}
 					}
 				}
-			}
+			
+
+	            if (count > 0 && scrollY > 0) {
+	                if (drawOverscrollFooter) {
+	                    final int absListBottom = mBottom;
+	                    bounds.top = absListBottom;
+	                    bounds.bottom = absListBottom + scrollY;
+	                    drawOverscrollFooter(canvas, overscrollFooterDrawable, bounds);
+	                } else if (drawDividers) {
+	                    bounds.top = listBottom;
+	                    bounds.bottom = listBottom + dividerHeight;
+	                    drawDivider(canvas, bounds, -1);
+	                }
+	            }
+    		}
     	}
-    	
         // Draw the indicators (these should be drawn above the dividers) and children
         super.dispatchDraw(canvas);
     }

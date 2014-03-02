@@ -603,8 +603,8 @@ class FastScroller {
 //                expList.setSelectionFromTop(expList.getFlatListPosition(
 //                        ExpandableListView.getPackedPositionForGroup(index + mListOffset)), 0);
 //            } else
-            	if (mList instanceof FoolView) {
-                ((FoolView)mList).setSelectionFromTop(index + mListOffset, 0);
+            	if (mList instanceof FoolListView) {
+                ((FoolListView)mList).setSelectionFromTop(index + mListOffset, 0);
             } else {
                 mList.setSelection(index + mListOffset);
             }
@@ -618,8 +618,8 @@ class FastScroller {
 //                expList.setSelectionFromTop(expList.getFlatListPosition(
 //                        ExpandableListView.getPackedPositionForGroup(index + mListOffset)), 0);
 //            } else 
-            	if (mList instanceof FoolView) {
-                ((FoolView)mList).setSelectionFromTop(index + mListOffset, 0);
+            	if (mList instanceof FoolListView) {
+                ((FoolListView)mList).setSelectionFromTop(index + mListOffset, 0);
             } else {
                 mList.setSelection(index + mListOffset);
             }

@@ -27,7 +27,7 @@ import android.widget.WrapperListAdapter;
 
 import java.util.ArrayList;
 
-import zy.fool.widget.FoolView;
+import zy.fool.widget.FoolListView;
 
 /**
  * ListAdapter used when a FoolView has header views. This ListAdapter
@@ -42,20 +42,20 @@ public class HeaderViewListAdapter implements WrapperListAdapter, Filterable {
 
     // These two ArrayList are assumed to NOT be null.
     // They are indeed created when declared in FoolView and then shared.
-    ArrayList<FoolView.FixedViewInfo> mHeaderViewInfos;
-    ArrayList<FoolView.FixedViewInfo> mFooterViewInfos;
+    ArrayList<FoolListView.FixedViewInfo> mHeaderViewInfos;
+    ArrayList<FoolListView.FixedViewInfo> mFooterViewInfos;
 
     // Used as a placeholder in case the provided info views are indeed null.
     // Currently only used by some CTS tests, which may be removed.
-    static final ArrayList<FoolView.FixedViewInfo> EMPTY_INFO_LIST =
-        new ArrayList<FoolView.FixedViewInfo>();
+    static final ArrayList<FoolListView.FixedViewInfo> EMPTY_INFO_LIST =
+        new ArrayList<FoolListView.FixedViewInfo>();
 
     boolean mAreAllFixedViewsSelectable;
 
     private final boolean mIsFilterable;
 
-    public HeaderViewListAdapter(ArrayList<FoolView.FixedViewInfo> headerViewInfos,
-                                 ArrayList<FoolView.FixedViewInfo> footerViewInfos,
+    public HeaderViewListAdapter(ArrayList<FoolListView.FixedViewInfo> headerViewInfos,
+                                 ArrayList<FoolListView.FixedViewInfo> footerViewInfos,
                                  ListAdapter adapter) {
         mAdapter = adapter;
         mIsFilterable = adapter instanceof Filterable;
@@ -90,9 +90,9 @@ public class HeaderViewListAdapter implements WrapperListAdapter, Filterable {
 	        && getFootersCount() + getHeadersCount() == 0;
     }
 
-    private boolean areAllListInfosSelectable(ArrayList<FoolView.FixedViewInfo> infos) {
+    private boolean areAllListInfosSelectable(ArrayList<FoolListView.FixedViewInfo> infos) {
         if (infos != null) {
-            for (FoolView.FixedViewInfo info : infos) {
+            for (FoolListView.FixedViewInfo info : infos) {
                 if (!info.isSelectable) {
                     return false;
                 }
@@ -103,7 +103,7 @@ public class HeaderViewListAdapter implements WrapperListAdapter, Filterable {
 
     public boolean removeHeader(View v) {
         for (int i = 0; i < mHeaderViewInfos.size(); i++) {
-            FoolView.FixedViewInfo info = mHeaderViewInfos.get(i);
+        	FoolListView.FixedViewInfo info = mHeaderViewInfos.get(i);
             if (info.view == v) {
                 mHeaderViewInfos.remove(i);
 
@@ -120,7 +120,7 @@ public class HeaderViewListAdapter implements WrapperListAdapter, Filterable {
 
     public boolean removeFooter(View v) {
         for (int i = 0; i < mFooterViewInfos.size(); i++) {
-            FoolView.FixedViewInfo info = mFooterViewInfos.get(i);
+        	FoolListView.FixedViewInfo info = mFooterViewInfos.get(i);
             if (info.view == v) {
                 mFooterViewInfos.remove(i);
 

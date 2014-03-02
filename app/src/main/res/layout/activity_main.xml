@@ -1,20 +1,17 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="zy.fool.app.MainActivity"
-    tools:ignore="MergeRootFrame" >
-
-    <zy.fool.view.SubFoolView
-        style="@style/foolview_style"
-        android:layout_width="300dp"
-        android:layout_height="400dp"
-        android:divider="#333333"
+    tools:ignore="MergeRootFrame"
+     >
+    
+    <zy.fool.widget.FoolListView
+        style = "@style/foolview_style"
         android:id="@+id/foolview"
+        
         />
-
-
-
-
 </FrameLayout>

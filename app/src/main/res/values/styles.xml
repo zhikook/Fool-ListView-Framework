@@ -1,13 +1,20 @@
 <resources>
-
-    <style name="foolview_style" >
+    <style name="foolview_style"  parent="@android:Widget.AbsListView">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">fill_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:listSelector">@drawable/listview_item_selector</item>
-        <item name="android:divider">@drawable/listview_divider_line</item>
-        <item name="android:dividerHeight">1.0dip</item>
+        <item name="divider">@drawable/listview_divider_line</item>
+        <item name="dividerHeight">1.0dip</item>
         <item name="android:fadingEdge">none</item>
         <item name="android:scrollingCache">false</item>
     </style>
+    
+    <style name="Widget.ListView" parent="@android:Widget.AbsListView">
+       <item name="android:listSelector">@android:drawable/list_selector_background</item>
+       <item name="android:cacheColorHint">?android:attr/colorBackgroundCacheHint</item>
+       <item name="android:divider">@drawable/divider_horizontal_dark_opaque</item>
+   </style>
+   
+   
 </resources>
