@@ -1,4 +1,7 @@
+
 #Fool-ListView-Framework  UNFINSIHED
+
+*This project is No-Update, There will be more changes in this https://github.com/zhikook/FoolFramework_Android_UI_Component*
 
 Android UI ,Special ListView Framework, Version 0.488
 
